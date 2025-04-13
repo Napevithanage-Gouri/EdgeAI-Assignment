@@ -5,7 +5,7 @@ import { useAuth } from "../contexts/AuthContext";
 import { TextField, Button, Typography, Container, Box, MenuItem, Select, FormControl, InputLabel } from "@mui/material";
 
 const Authentication = () => {
-  const [isSignUp, setIsSignUp] = useState(true);
+  const [isSignUp, setIsSignUp] = useState(false);
   const [role, setRole] = useState("User");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -31,7 +31,7 @@ const Authentication = () => {
 
   return (
     <Container maxWidth="sm" sx={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", height: "100vh" }}>
-      <Box sx={{ mt: 4, textAlign: "center", backgroundColor: "#f5f5f5", padding: 4, borderRadius: 2 }}>
+      <Box sx={{ mt: 4, textAlign: "center", backgroundColor: "#DEDEDE", padding: 4, borderRadius: 2, minWidth:"400px" }}>
         <Typography variant="h4" gutterBottom>
           {isSignUp ? "Sign Up" : "Sign In"}
         </Typography>

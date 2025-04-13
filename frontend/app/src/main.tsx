@@ -10,6 +10,7 @@ import UserHome from "./pages/User/Home.tsx";
 import UserDashboard from "./pages/User/Dashboard.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import NavBar from "./components/NavBar";
+import ManageUser from "./pages/Admin/ManageUser.tsx";
 
 const ProtectedRoute = ({ children, allowedRole }: { children: any; allowedRole: string }) => {
   const { access_token, role } = useAuth();
@@ -37,10 +38,18 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/admin/dashboard/:id",
+    path: "/admin/dashboard",
     element: (
       <ProtectedRoute allowedRole="Admin">
         <AdminDashboard />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/admin/users",
+    element: (
+      <ProtectedRoute allowedRole="Admin">
+        <ManageUser />
       </ProtectedRoute>
     ),
   },
@@ -53,7 +62,7 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/user/dashboard/:id",
+    path: "/user/dashboard",
     element: (
       <ProtectedRoute allowedRole="User">
         <UserDashboard />

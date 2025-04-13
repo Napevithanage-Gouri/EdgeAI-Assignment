@@ -32,10 +32,11 @@ async def sign_in(request: SignInRequest, db: Session = Depends(get_db)):
     user = get_user_by_email(db, request.email)
     if not user or not verify_password(request.password, user.password):
         raise HTTPException(status_code=401, detail="Invalid email or password")
-    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+
     role = "Admin" if user.admin_privilege else "User"
+    
     access_token = create_access_token(
         data={"sub": user.email, "role": role},
-        expires_delta=access_token_expires
     )
+    
     return {"access_token": access_token, "token_type": "bearer", "role": role}

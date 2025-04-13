@@ -1,8 +1,10 @@
+import { Container } from "@mui/material";
+
 const UserHome = () => {
   return (
-    <div>
+    <Container sx={{ padding: "0px", margin: "0px", marginTop: "20px" }}>
       <h1>Home</h1>
-    </div>
+    </Container>
   );
 };
 

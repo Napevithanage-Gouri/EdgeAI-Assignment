@@ -38,6 +38,9 @@ const NavBar = () => {
               <Button color="inherit" onClick={() => navigate("/admin/dashboard")}>
                 Dashboard
               </Button>
+              <Button color="inherit" onClick={() => navigate("/admin/users")}>
+                Users
+              </Button>
             </>
           ) : (
             <>
