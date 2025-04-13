@@ -1,11 +1,7 @@
-import { useParams } from "react-router-dom";
-
 const AdminDashboard = () => {
-  const { id } = useParams();
-
   return (
     <div>
-      <h1>Dashboard Item: {id}</h1>
+      <h1>Dashboard Item</h1>
     </div>
   );
 };

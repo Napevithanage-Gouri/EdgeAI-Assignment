@@ -9,6 +9,7 @@ import AdminDashboard from "./pages/Admin/Dashboard.tsx";
 import UserHome from "./pages/User/Home.tsx";
 import UserDashboard from "./pages/User/Dashboard.tsx";
 import NotFound from "./pages/NotFound.tsx";
+import NavBar from "./components/NavBar";
 
 const ProtectedRoute = ({ children, allowedRole }: { children: any; allowedRole: string }) => {
   const { access_token, role } = useAuth();
@@ -17,7 +18,12 @@ const ProtectedRoute = ({ children, allowedRole }: { children: any; allowedRole:
     return <Navigate to="/" replace />;
   }
 
-  return children;
+  return (
+    <>
+      <NavBar />
+      {children}
+    </>
+  );
 };
 
 const router = createBrowserRouter([
