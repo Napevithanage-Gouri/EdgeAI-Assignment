@@ -1,15 +1,23 @@
 import uvicorn
 from fastapi import FastAPI
+from api import auth
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
-@app.get("/")
-def read_root():
-    return {"message": "Welcome to the FastAPI application!"}
+app.include_router(auth.router, prefix="/auth", tags=["auth"])
 
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: str = None):
-    return {"item_id": item_id, "q": q}
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],             
+    allow_credentials=True,
+    allow_methods=["*"],         
+    allow_headers=["*"],       
+)
+
+app.get("/")
+def read_root():
+    return {"Hello": "World"}
 
 if __name__ == "__main__":
     uvicorn.run()
