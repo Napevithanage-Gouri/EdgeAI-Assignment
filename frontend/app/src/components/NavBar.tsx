@@ -36,7 +36,7 @@ const NavBar = () => {
                 Home
               </Button>
               <Button color="inherit" onClick={() => navigate("/admin/dashboard")}>
-                Dashboard
+                Devices
               </Button>
               <Button color="inherit" onClick={() => navigate("/admin/users")}>
                 Users
@@ -46,9 +46,6 @@ const NavBar = () => {
             <>
               <Button color="inherit" onClick={() => navigate("/user/home")}>
                 Home
-              </Button>
-              <Button color="inherit" onClick={() => navigate("/user/dashboard")}>
-                Dashboard
               </Button>
             </>
           )}

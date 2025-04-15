@@ -3,6 +3,26 @@ import Cookies from "js-cookie";
 
 const API_URL = "http://localhost:8000";
 
+export const getUserDevices = async () => {
+  const token = Cookies.get("access_token");
+  const response = await axios.get(`${API_URL}/user/devices`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.data;
+};
+
+export const getUserData = async () => {
+  const token = Cookies.get("access_token");
+  const response = await axios.get(`${API_URL}/user/userdata`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.data;
+};
+
 export const getSensorData = async () => {
   const token = Cookies.get("access_token");
   const response = await axios.get(`${API_URL}/user/sensordata`, {
@@ -10,5 +30,18 @@ export const getSensorData = async () => {
       Authorization: `Bearer ${token}`,
     },
   });
+  return response.data;
+};
+
+export const getUserDevicesList = async () => {
+  const token = Cookies.get("access_token");
+  const response = await axios.get(
+    `${API_URL}/user/userdeviceslist`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
   return response.data;
 };

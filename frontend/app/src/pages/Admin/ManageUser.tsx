@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import Switch from "@mui/material/Switch";
 import { getUsers, setUserAuthorization } from "../../requests/AdminRequests";
-import { Container } from "@mui/material";
+import { Breadcrumbs, Container, Typography } from "@mui/material";
 
 const ManageUser = () => {
   interface User {
-    user: string;
+    name: string;
     email: string;
     authorization: string;
     admin_privilege: string;
@@ -51,8 +51,11 @@ const ManageUser = () => {
   };
 
   return (
-    <Container sx={{ padding: "0px", margin: "0px", marginTop: "20px" }}>
-      <h1>Dashboard</h1>
+    <Container sx={{ padding: "0px", margin: "0px", marginTop: "20px", marginBottom: "20px" }}>
+      <Breadcrumbs aria-label="breadcrumb" sx={{ mb: 2 }}>
+        <Typography color="text.primary">Users</Typography>
+      </Breadcrumbs>
+      <h1>Users</h1>
       <table style={{ width: "100%", borderCollapse: "collapse", marginTop: "20px" }}>
         <thead>
           <tr style={{ backgroundColor: "#f5f5f5" }}>
@@ -69,7 +72,7 @@ const ManageUser = () => {
           {userData.map((item, index) => (
             <tr key={index} style={{ borderBottom: "1px solid #ddd" }}>
               <td style={{ border: "1px solid #ddd", padding: "8px" }}>{index + 1}</td>
-              <td style={{ border: "1px solid #ddd", padding: "8px" }}>{item.user}</td>
+              <td style={{ border: "1px solid #ddd", padding: "8px" }}>{item.name}</td>
               <td style={{ border: "1px solid #ddd", padding: "8px" }}>{item.email}</td>
               <td style={{ border: "1px solid #ddd", padding: "8px" }}>{item.authorization}</td>
               <td style={{ border: "1px solid #ddd", padding: "8px" }}>{item.admin_privilege}</td>
