@@ -21,8 +21,8 @@ class User(Base):
     email = Column(String(255), unique=True, index=True, nullable=False)
     name = Column(String(255), nullable=False)
     password = Column(String(255), nullable=False)
-    authorized = Column(Boolean, default=True)
-    admin_privilege = Column(Boolean, default=True)
+    authorized = Column(Boolean, default=False)
+    admin_privilege = Column(Boolean, default=False)
 
     connections = relationship("Connection", back_populates="user")
 
