@@ -6,10 +6,13 @@ import { useNavigate, useParams } from "react-router-dom";
 
 const UserDashboard = () => {
   interface SensorData {
-    image: string;
-    location: string;
+    event_id: string;
+    device_name: string;
+    timestamp: string;
+    lat: number;
+    lon: number;
     speed: number;
-    prediction: string;
+    status: string;
   }
   const navigate = useNavigate();
   const [sensorData, setSensorData] = useState<SensorData[]>([]);
@@ -26,7 +29,7 @@ const UserDashboard = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await getSensorData();
+        const data = await getSensorData(device);
         setSensorData(data);
       } catch (error) {
         console.error("Error fetching sensor data:", error);
@@ -44,7 +47,7 @@ const UserDashboard = () => {
         <Typography color="text.primary">Dashboard</Typography>
       </Breadcrumbs>
       <h1>Overview</h1>
-      <Card sx={{ maxWidth: 640, mt: 4, boxShadow: 3 }}>
+      <Card sx={{ maxWidth: 640, boxShadow: 3, mt: 2, mb: 2 }}>
         <CardContent>
           <Typography variant="h6" gutterBottom>
             Monthly Data Overview
@@ -61,26 +64,28 @@ const UserDashboard = () => {
         </CardContent>
       </Card>
       <h1>Dashboard</h1>
-      <table style={{ width: "100%", borderCollapse: "collapse", marginTop: "20px" }}>
+      <table style={{ width: "100%", borderCollapse: "collapse", marginTop: "20px", marginBottom: "20px" }}>
         <thead>
           <tr style={{ backgroundColor: "#f5f5f5" }}>
-            <th style={{ border: "1px solid #ddd", padding: "8px", textAlign: "left" }}>ID</th>
-            <th style={{ border: "1px solid #ddd", padding: "8px", textAlign: "left" }}>Image</th>
-            <th style={{ border: "1px solid #ddd", padding: "8px", textAlign: "left" }}>Location</th>
+            <th style={{ border: "1px solid #ddd", padding: "8px", textAlign: "left" }}>Event ID</th>
+            <th style={{ border: "1px solid #ddd", padding: "8px", textAlign: "left" }}>Device Name</th>
+            <th style={{ border: "1px solid #ddd", padding: "8px", textAlign: "left" }}>Timestamp</th>
+            <th style={{ border: "1px solid #ddd", padding: "8px", textAlign: "left" }}>Latitude</th>
+            <th style={{ border: "1px solid #ddd", padding: "8px", textAlign: "left" }}>Longitude</th>
             <th style={{ border: "1px solid #ddd", padding: "8px", textAlign: "left" }}>Speed</th>
-            <th style={{ border: "1px solid #ddd", padding: "8px", textAlign: "left" }}>Prediction</th>
+            <th style={{ border: "1px solid #ddd", padding: "8px", textAlign: "left" }}>Status</th>
           </tr>
         </thead>
         <tbody>
           {sensorData.map((item, index) => (
             <tr key={index} style={{ borderBottom: "1px solid #ddd" }}>
-              <td style={{ border: "1px solid #ddd", padding: "8px" }}>{index + 1}</td>
-              <td style={{ border: "1px solid #ddd", padding: "8px" }}>
-                <img src={item.image} alt={item.location} width="100" />
-              </td>
-              <td style={{ border: "1px solid #ddd", padding: "8px" }}>{item.location}</td>
+              <td style={{ border: "1px solid #ddd", padding: "8px" }}>{item.event_id}</td>
+              <td style={{ border: "1px solid #ddd", padding: "8px" }}>{item.device_name}</td>
+              <td style={{ border: "1px solid #ddd", padding: "8px" }}>{item.timestamp}</td>
+              <td style={{ border: "1px solid #ddd", padding: "8px" }}>{item.lat}</td>
+              <td style={{ border: "1px solid #ddd", padding: "8px" }}>{item.lon}</td>
               <td style={{ border: "1px solid #ddd", padding: "8px" }}>{item.speed}</td>
-              <td style={{ border: "1px solid #ddd", padding: "8px" }}>{item.prediction}</td>
+              <td style={{ border: "1px solid #ddd", padding: "8px" }}>{item.status}</td>
             </tr>
           ))}
         </tbody>

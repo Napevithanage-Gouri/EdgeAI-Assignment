@@ -1,8 +1,12 @@
 from sqlalchemy import UniqueConstraint, create_engine, Column, Integer, String, Boolean, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship
+from sqlalchemy.dialects.postgresql import UUID
+import uuid
+from datetime import datetime
+from core.config import Config
 
-DATABASE_URL = "sqlite:///./db/test.db"
+DATABASE_URL = Config.DATABASE_URL
 
 engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
 
@@ -14,9 +18,9 @@ class User(Base):
     __tablename__ = "users"
 
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
-    email = Column(String, unique=True, index=True, nullable=False)
-    name = Column(String, nullable=False)
-    password = Column(String, nullable=False)
+    email = Column(String(255), unique=True, index=True, nullable=False)
+    name = Column(String(255), nullable=False)
+    password = Column(String(255), nullable=False)
     authorized = Column(Boolean, default=True)
     admin_privilege = Column(Boolean, default=True)
 
@@ -40,7 +44,7 @@ class Device(Base):
     __tablename__ = "devices"
 
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
-    device_name = Column(Integer, nullable=False, unique=True)
+    device_name = Column(String(255), nullable=False, unique=True)
     
     connections = relationship("Connection", back_populates="device")
 

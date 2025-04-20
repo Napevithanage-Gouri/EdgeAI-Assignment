@@ -67,7 +67,7 @@ const UserDevices = () => {
       <Box display={"flex"} justifyContent="space-between" alignItems="center" sx={{ mb: 2 }}>
         <h1>User Devices</h1>
         <Button variant="contained" onClick={() => setOpen(true)}>
-          Add Thing
+          Add Device
         </Button>
       </Box>
       <table style={{ width: "100%", borderCollapse: "collapse", marginTop: "20px" }}>

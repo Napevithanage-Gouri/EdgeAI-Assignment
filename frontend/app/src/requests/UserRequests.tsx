@@ -23,9 +23,9 @@ export const getUserData = async () => {
   return response.data;
 };
 
-export const getSensorData = async () => {
+export const getSensorData = async (device: string | undefined) => {
   const token = Cookies.get("access_token");
-  const response = await axios.get(`${API_URL}/user/sensordata`, {
+  const response = await axios.post(`${API_URL}/user/sensordata`, { device }, {
     headers: {
       Authorization: `Bearer ${token}`,
     },

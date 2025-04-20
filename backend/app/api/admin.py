@@ -57,7 +57,7 @@ async def add_device_connection(request: Request,db: Session = Depends(get_db), 
         if not user:
             raise HTTPException(status_code=404, detail="User not found")
         if device and user:
-            create_connection(db, device.id, user.id)
+            create_connection(db, user.id, device.id)
             return {"message": "Connection created successfully"}
     else:
         raise HTTPException(status_code=500, detail="User not found")

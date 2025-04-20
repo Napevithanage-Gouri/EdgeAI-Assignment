@@ -134,8 +134,8 @@ def delete_connection(db: Session, connection_id: int):
 def get_all_userdevices(db: Session):
     userdevices = (
         db.query(User.name, User.email, func.count(Device.id).label("device_count"))
-        .join(Connection, User.id == Connection.user_id)
-        .join(Device, Device.id == Connection.device_id)
+        .outerjoin(Connection, User.id == Connection.user_id)
+        .outerjoin(Device, Device.id == Connection.device_id)
         .group_by(User.id)
         .all()
     )
