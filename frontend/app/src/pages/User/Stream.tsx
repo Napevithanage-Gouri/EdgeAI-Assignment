@@ -1,18 +1,19 @@
 import { Box, Container, LinearProgress, styled, Typography, linearProgressClasses, Breadcrumbs, Link, Paper } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import Cookies from "js-cookie";
 
 const getInterpolatedColor = (value: number) => {
   const percent = value / 100;
   if (percent < 0.33) {
     const ratio = percent / 0.33;
-    return blendColors("#4caf50", "#ffeb3b", ratio);
+    return blendColors("#f44336", "#ff9800", ratio);
   } else if (percent < 0.66) {
     const ratio = (percent - 0.33) / 0.33;
-    return blendColors("#ffeb3b", "#ff9800", ratio);
+    return blendColors("#ff9800", "#ffeb3b", ratio);
   } else {
     const ratio = (percent - 0.66) / 0.34;
-    return blendColors("#ff9800", "#f44336", ratio);
+    return blendColors("#ffeb3b", "#4caf50", ratio);
   }
 };
 
@@ -51,22 +52,23 @@ const ColoredLinearProgress = styled(LinearProgress)(({ value }) => {
 });
 
 const UserStream = () => {
+  interface SensorData {
+    event_id: string;
+    device_name: string;
+    timestamp: string;
+    lat: number;
+    lon: number;
+    speed: number;
+    status: string;
+    image?: string;
+  }
+
   const [progress, setProgress] = useState(0);
   const navigate = useNavigate();
   const { device } = useParams();
   const [codeLines, setCodeLines] = useState<string[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-  const interval = setInterval(() => {
-    setCodeLines((prev) => {
-      const newLines = [...prev, `> Line ${prev.length + 1} of output code`];
-      return newLines.slice(-100);
-    });
-  }, 500);
-
-    return () => clearInterval(interval);
-  }, []);
+  const [sensorImage, setSensorImage] = useState<string>("");
 
   useEffect(() => {
     containerRef.current?.scrollTo({
@@ -76,13 +78,56 @@ const UserStream = () => {
   }, [codeLines]);
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setProgress((oldProgress) => (oldProgress >= 100 ? 0 : oldProgress + 1));
-    }, 100);
-    return () => {
-      clearInterval(timer);
-    };
-  }, []);
+    const token = Cookies.get("access_token");
+    if (device && token) {
+      const ws = new WebSocket(`ws://localhost:8000/user/ws?token=${token}&device=${device}`);
+
+      ws.onopen = () => {
+        console.log("WebSocket connection established");
+      };
+
+      ws.onerror = (error) => {
+        console.error("WebSocket error:", error);
+      };
+
+      ws.onclose = (event) => {
+        console.log("WebSocket closed:", event);
+      };
+
+      ws.onmessage = (event) => {
+        try {
+          const data: any = JSON.parse(event.data);
+            setCodeLines((prev) =>
+            [
+              ...prev,
+              `Event: ${data.event_id}`,
+              `Timestamp: ${data.timestamp}`,
+              `Speed: ${data.speed} km/h`,
+              `Status: ${data.status}`,
+              `Type: ${data.event_type}`,
+              `Confidence: ${(data.confidence * 100).toFixed(2)}%`,
+              `----------------------------------------`,
+            ].slice(-100)
+            );
+          if (data["image_base64"]) {
+            const imageUrl = `data:image/png;base64,${data["image_base64"]}`;
+            setSensorImage(imageUrl);
+          }
+          if (data.confidence !== undefined) {
+            setProgress(Math.round(data.confidence * 100));
+          }
+        } catch (e) {
+          setCodeLines((prev) => [...prev, event.data].slice(-100));
+        }
+      };
+
+      return () => {
+        if (ws.readyState === WebSocket.CONNECTING || ws.readyState === WebSocket.OPEN) {
+          ws.close();
+        }
+      };
+    }
+  }, [device]);
 
   return (
     <Container sx={{ padding: "0px", margin: "0px", marginTop: "20px", marginBottom: "20px" }}>
@@ -103,12 +148,28 @@ const UserStream = () => {
             overflow: "hidden",
           }}>
           <Box sx={{ width: "100%", height: 360, backgroundColor: "#000" }}>
-            <video autoPlay muted style={{ width: "100%", height: "100%", objectFit: "cover" }} src="https://www.w3schools.com/html/mov_bbb.mp4" />
+            {sensorImage ? (
+              <img src={sensorImage} alt="Sensor" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+            ) : (
+              <Box
+                sx={{
+                  width: "100%",
+                  height: "100%",
+                  backgroundColor: "#444",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}>
+                <Typography variant="h6" color="#fff">
+                  Waiting for sensor image...
+                </Typography>
+              </Box>
+            )}
           </Box>
 
           <Box sx={{ px: 2, py: 2 }}>
             <Typography variant="body2" gutterBottom>
-              Processing: {progress}%
+              Confidence: {progress}%
             </Typography>
             <ColoredLinearProgress variant="determinate" value={progress} />
           </Box>

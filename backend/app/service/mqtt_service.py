@@ -31,7 +31,7 @@ class MQTTService:
 
     def subscribe_to_topic(self, topic: str):
         def on_message(topic, payload, dup, qos, retain, **kwargs):
-            print(f"Received message on {topic}: {payload.decode()}")
+            # print(f"Received message on {topic}: {payload.decode()[:300]}")
             if self.on_data_callback:
                 self.on_data_callback(payload.decode())
 
