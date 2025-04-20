@@ -44,6 +44,21 @@ async def get_sensor_data(request: Request, db: Session = Depends(get_db), curre
     else:
         raise HTTPException(status_code=500, detail="User not found")
 
+@router.post("/sensordata/aggregate")
+async def get_sensor_data(request: Request, db: Session = Depends(get_db), current_user: dict = Depends(get_current_user)):
+    if current_user:
+        data = await request.json()
+        user_email = current_user.get("sub")
+        device_name = data["device"]
+        user_devices = [device["device"] for device in get_user_devices(db, user_email)]
+        dynamodb = DynamoDBService()
+        if device_name in user_devices:
+            return dynamodb.get_event_logs_agg(device_name)
+        else:
+            raise HTTPException(status_code=403, detail="Device not associated with the user")
+    else:
+        raise HTTPException(status_code=500, detail="User not found")
+
 @router.get("/userdeviceslist")
 async def add_device_connection(db: Session = Depends(get_db), current_user: dict = Depends(get_current_user)):
     if current_user:

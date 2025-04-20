@@ -1,18 +1,20 @@
-import { StrictMode } from "react";
+import { lazy, StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
 import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import Authentication from "./pages/Authentication.tsx";
-import AdminHome from "./pages/Admin/Home.tsx";
-import AdminDashboard from "./pages/Admin/ManageDevices.tsx";
-import UserHome from "./pages/User/Home.tsx";
-import UserDashboard from "./pages/User/Dashboard.tsx";
-import NotFound from "./pages/NotFound.tsx";
 import NavBar from "./components/NavBar";
-import ManageUser from "./pages/Admin/ManageUser.tsx";
-import UserStream from "./pages/User/Stream.tsx";
-import UserDevices from "./pages/Admin/UserDevices.tsx";
+
+const AdminHome = lazy(() => import("./pages/Admin/Home.tsx"));
+const AdminDashboard = lazy(() => import("./pages/Admin/ManageDevices.tsx"));
+const UserHome = lazy(() => import("./pages/User/Home.tsx"));
+const UserDashboard = lazy(() => import("./pages/User/Dashboard.tsx"));
+const ManageUser = lazy(() => import("./pages/Admin/ManageUser.tsx"));
+const UserStream = lazy(() => import("./pages/User/Stream.tsx"));
+const UserDevices = lazy(() => import("./pages/Admin/UserDevices.tsx"));
+const NotFound = lazy(() => import("./pages/NotFound.tsx"));
+
 
 const ProtectedRoute = ({ children, allowedRole }: { children: any; allowedRole: string }) => {
   const { access_token, role } = useAuth();

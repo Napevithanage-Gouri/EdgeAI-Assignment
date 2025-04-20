@@ -33,6 +33,21 @@ export const getSensorData = async (device: string | undefined) => {
   return response.data;
 };
 
+export const getSensorDataAgg = async (device: string | undefined) => {
+  const token = Cookies.get("access_token");
+  const response = await axios.post(
+    `${API_URL}/user/sensordata/aggregate`,
+    { device },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  return response.data;
+};
+
+
 export const getUserDevicesList = async () => {
   const token = Cookies.get("access_token");
   const response = await axios.get(

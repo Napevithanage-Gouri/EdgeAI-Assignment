@@ -52,17 +52,6 @@ const ColoredLinearProgress = styled(LinearProgress)(({ value }) => {
 });
 
 const UserStream = () => {
-  interface SensorData {
-    event_id: string;
-    device_name: string;
-    timestamp: string;
-    lat: number;
-    lon: number;
-    speed: number;
-    status: string;
-    image?: string;
-  }
-
   const [progress, setProgress] = useState(0);
   const navigate = useNavigate();
   const { device } = useParams();
