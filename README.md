@@ -1,1 +1,1 @@
-# EdgeAI-Group26 - Model
+# EdgeAI-Group26

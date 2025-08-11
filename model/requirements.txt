@@ -1,0 +1,12 @@
+ipykernel
+--extra-index-url https://download.pytorch.org/whl/cu118
+torch
+torchvision
+torchaudio
+filetype 
+pillow-heif
+ultralytics
+matplotlib 
+numpy 
+opencv-python
+PyYAML
